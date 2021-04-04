@@ -26,7 +26,11 @@ void fillOrder(char *orderName);
 const char* getOrder(int index);
 int pairing(int threadId);
 void unPairing(int pairIndex);
-void cooking(char *orderName);
+
+void cooking(const char* orderName, int tid) {
+  printf("Thread %d is cooking %s\n", tid, orderName);
+  sleep(2);
+}
 
 void checkStatus() {
   printf("STATUS : orderSpace = %d && cookSpace = %d \n", orderSpaceCount, cookSpaceCount);
@@ -64,7 +68,7 @@ void *playerThread(void *id){
     }
     printf("Thread %d process %s\n", tid, orderName);
 
-    cooking(orderName);
+    cooking(orderName, tid);
 
 
     // printf("Process %d is processing %s\n", tid, orderName);
@@ -114,10 +118,10 @@ void unPairing(int pairIndex) {
   pairArray[pairIndex] = -1;
 }
 
-void cooking(char *orderName) {
-  printf("cooking %s\n", orderName);
-  sleep(2);
-}
+// void cooking(const char* orderName) {
+//   printf("cooking %s\n", orderName);
+//   sleep(2);
+// }
 
 int main() {
   printf("Start program...\n");
