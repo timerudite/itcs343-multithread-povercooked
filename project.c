@@ -28,12 +28,52 @@ int pairing(int threadId);
 void unPairing(int pairIndex);
 
 void cooking(const char* orderName, int tid) {
-  printf("Thread %d is cooking %s\n", tid, orderName);
-  sleep(2);
-}
-
-void checkStatus() {
-  printf("STATUS : orderSpace = %d && cookSpace = %d \n", orderSpaceCount, cookSpaceCount);
+ 
+  
+  if (strcmp(orderName, "TonkotsuRamen") == 0) {
+    int amount = 3;
+    printf("Thread %d is cooking %s for %d second\n", tid, orderName, amount);
+    sleep(amount);
+  } else if (strcmp(orderName, "ButterChicken") == 0) {
+    int amount = 10;
+    printf("Thread %d is cooking %s for %d second\n", tid, orderName, amount);
+    sleep(amount);
+  } else if (strcmp(orderName, "BeefBurger") == 0) {
+    int amount = 2;
+    printf("Thread %d is cooking %s for %d second\n", tid, orderName, amount);
+    sleep(amount);
+  } else if (strcmp(orderName, "Padthai") == 0) {
+    int amount = 1;
+    printf("Thread %d is cooking %s for %d second\n", tid, orderName, amount);
+    sleep(amount);
+  } else if (strcmp(orderName, "Pancake") == 0) {
+    int amount = 3;
+    printf("Thread %d is cooking %s for %d second\n", tid, orderName, amount);
+    sleep(amount);
+  } else if (strcmp(orderName, "EggBenedict") == 0) {
+    int amount = 2;
+    printf("Thread %d is cooking %s for %d second\n", tid, orderName, amount);
+    sleep(amount);
+  } else if (strcmp(orderName, "FriedRice") == 0) {
+    int amount = 3;
+    printf("Thread %d is cooking %s for %d second\n", tid, orderName, amount);
+    sleep(amount);
+  } else if (strcmp(orderName, "PorkChop") == 0) {
+    int amount = 4;
+    printf("Thread %d is cooking %s for %d second\n", tid, orderName, amount);
+    sleep(amount);
+  } else if (strcmp(orderName, "Pho") == 0) {
+    int amount = 1;
+    printf("Thread %d is cooking %s for %d second\n", tid, orderName, amount);
+    sleep(amount);
+  } else if (strcmp(orderName, "FishAndShip") == 0) {
+    int amount = 2;
+    printf("Thread %d is cooking %s for %d second\n", tid, orderName, amount);
+    sleep(amount);
+  } else {
+    printf("Error for sure ==== Thread %d is cooking %s\n", tid, orderName);
+    sleep(2);
+  }
 }
 
 void *playerThread(void *id){
@@ -41,10 +81,6 @@ void *playerThread(void *id){
   printf("Thread %d  ready to work\n", tid);
   while (1) {
     sem_wait(&cookSpace);
-    // cookSpaceCount -= 1;
-    // orderSpaceCount += 1;
-    // printf("Thread %d === ", tid);
-    // checkStatus();
 
     if(quitFlag == 1) {
       printf("______Thread %d is quiting\n", tid);
@@ -75,10 +111,6 @@ void *playerThread(void *id){
     unPairing(pairNumber);
     printf("Thread %d finishes %s\n", tid, orderName);
     sem_post(&orderSpace);
-    // orderSpaceCount += 1;
-    // cookSpaceCount -= 1;
-    // printf("Thread %d === ", tid);
-    // checkStatus();
     
   }
   return NULL;
@@ -114,14 +146,10 @@ int pairing(int threadId) {
   exit(1);
   return 0;
 }
+
 void unPairing(int pairIndex) {
   pairArray[pairIndex] = -1;
 }
-
-// void cooking(const char* orderName) {
-//   printf("cooking %s\n", orderName);
-//   sleep(2);
-// }
 
 int main() {
   printf("Start program...\n");
@@ -146,45 +174,62 @@ int main() {
   }
 
   
-  // Input order from file
-  char *line;
-  ssize_t lineSize;
-  size_t len = 0;
+  // // Input order from file 1
+  // char *line;
+  // ssize_t lineSize;
+  // size_t len = 0;
+  // FILE *fptr;
+  // // Error handlinig when pointer returns NULL.
+  // if((fptr = fopen("orders.txt", "r")) == NULL) {
+  //   printf("Error! unable to open file");
+  //   exit(1);
+  // }
+  // fptr = fopen("orders.txt", "r");
+  // if(fptr == NULL) {
+  //   printf("Error! Unable to open file");
+  //   exit(1);
+  // }
+
+  // // read line by line from the file
+  // while((lineSize = getline(&line, &len, fptr)) != -1) {
+  //   // printf("Retrieved line of length %zu:\n", lineSize);
+  //   // printf("%s", line);
+  //   printf("Producer: Waiting to add order\n");
+  //   sem_wait(&orderSpace);
+    
+  //   printf("Producer: OrderSpace Decrease || Adding order\n");
+  //   fillOrder(line);
+  //   printf("Producer: CookSpace will Increase || Add %s\n", line);
+  //   sem_post(&cookSpace);
+
+  // }
+  // // end input 1
+
+  // Input order from file 2
+  char line[20];
+  int len = 20;
   FILE *fptr;
-  // Error handlinig when pointer returns NULL.
-  if((fptr = fopen("orders.txt", "r")) == NULL) {
-    printf("Error! unable to open file");
-    exit(1);
-  }
+  // Error handling when pointer returns NULL.
   fptr = fopen("orders.txt", "r");
   if(fptr == NULL) {
     printf("Error! Unable to open file");
     exit(1);
   }
-
   // read line by line from the file
-  while((lineSize = getline(&line, &len, fptr)) != -1) {
-    // printf("Retrieved line of length %zu:\n", lineSize);
-    // printf("%s", line);
+  while(fgets(line, len, fptr) != NULL) {
+    line[strlen(line)-1] = '\0';
+    // printf("%s\n", line);
     printf("Producer: Waiting to add order\n");
-    sem_wait(&orderSpace);
     
+    sem_wait(&orderSpace);
     printf("Producer: OrderSpace Decrease || Adding order\n");
     fillOrder(line);
     printf("Producer: CookSpace will Increase || Add %s\n", line);
     sem_post(&cookSpace);
-
   }
-
-  // lineSize = getline(&line, &len, fptr);
-  // printf("%s\n", line);
-  // fillOrder(line);
-  // const char* name = getOrder(0);
-  // printf("get order: %s\n", name);
-  // fclose(fptr);
-
-
-
+  fclose(fptr);
+  
+  // end input 2
 
   // wait for all thread to finish
   for(i=0; i<PMAX; i++) {
