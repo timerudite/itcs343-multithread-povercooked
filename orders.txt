@@ -1,0 +1,12 @@
+TonkotsuRamen
+ButterChicken
+BeefBurger
+Padthai
+Pancake
+EggBenedict
+FriedRice
+PorkChop
+Pho
+FishAndChip
+quit
+1
