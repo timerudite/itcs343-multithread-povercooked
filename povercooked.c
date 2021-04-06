@@ -370,8 +370,8 @@ void *playerThread(void *id)
 
         printf("\nThread %d finishes %s\n", tid, orderName);
         time_t endTime = time(NULL);
-        fprintf(stdout, "Thread %d finishes working at %ld\n", tid, endTime);
-        fprintf(stdout, "Thread %d use %ld second for cooking\n", tid, (endTime - startTime));
+        fprintf(stdout, "\nThread %d finishes working at %ld\n", tid, endTime);
+        //fprintf(stdout, "\nThread %d use %ld second for cooking\n", tid, (endTime - startTime));
         float useTime = (float)(endTime - startTime);
         sumTime += useTime;
         sem_post(&orderSpace);
@@ -426,7 +426,7 @@ int main()
     FILE *fptr;
 
     // Error handling when pointer returns NULL.
-    fptr = fopen("orders.txt", "r");
+    fptr = fopen("orders2.txt", "r");
     if (fptr == NULL)
     {
         printf("Error! Unable to open file");
@@ -463,9 +463,10 @@ int main()
     pthread_mutex_destroy(&mutex);
 
     printf("\n------------------------------------------");
-    printf("\nA whole time that use for every order is %.2f second\n", sumTime);
-    float turnAround = sumTime / (numOrder - 1);
-    printf("Average turnaround time for each order is %.2f second\n", turnAround);
+    printf("\nTurnaround time of the whole process = %.2f second\n", sumTime);
+
+    float avgTurnAround = sumTime / (numOrder - 1);
+    printf("Average turnaround time = %.2f second\n", avgTurnAround);
 
     printf("\nFinish program: Enjoy your meal !!\n");
     return 0;
