@@ -28,18 +28,6 @@ const char *getOrder();
 // int pairing(int threadId);
 // void unPairing(int pairIndex);
 
-void timeCounter()
-{
-    printf("timeCounter starts \n");
-    printf("Press enter to stop fun \n");
-    while (1)
-    {
-        if (getchar())
-            break;
-    }
-    printf("fun() ends \n");
-}
-
 void cooking(const char *orderName, int tid)
 {
     if (strcmp(orderName, "TonkotsuRamen") == 0)
